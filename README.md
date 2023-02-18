@@ -7,18 +7,20 @@ Please set the environment variables according to the Configuration section.
 * Configuration
   Please set your `config/environment.yml` like such:
 ```
-    development:
-      open_weather_api_key: '<development_key>'
-    production
-      open_weather_api_key: '<production_key>'
+  development:
+    open_weather_api_key: '<development_key>'
+  production
+    open_weather_api_key: '<production_key>'
  ```
 
 * Database creation
-  * `rake db:create` 
+  * `rake db:create`
 
 * Database initialization
   * `rake db:schema:load`
 
 * How to run the test suite
   * `bundle exec rspec spec/services/weather_forecast_spec.rb`
+  * `bundle exec rspec spec/services/fetch_weather_by_zip_spec.rb`
+  * `bundle exec rspec spec/services/fetch_weather_by_city_spec.rb`
 

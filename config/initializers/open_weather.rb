@@ -6,13 +6,13 @@ end
 =begin
   client = OpenWeather::Client.new
 
-  # data = client.current_weather(city: 'Silver Spring') 
+  data = client.current_weather(city: 'Silver Spring')
 
-  data = client.current_zip(20906, 'US') 
+  data = client.current_zip(20906, 'US')
 
   CURRENT TEMP - data.main.temp_f
 
-  HIGH - data.main.temp_max_f 
+  HIGH - data.main.temp_max_f
 
-  LOW - data.main.temp_min_f 
+  LOW - data.main.temp_min_f
 =end

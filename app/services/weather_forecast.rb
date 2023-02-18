@@ -1,68 +1,55 @@
 module Services
   class WeatherForecast
+    include Services::FetchWeatherByZip
+    include Services::FetchWeatherByCity
+
     def initialize
       @client = OpenWeather::Client.new
     end
 
     def process(options = {})
       if options[:city].blank? && options[:zip].blank?
-        response = {data: nil, error: 'Please pass in a city OR zip.', cache: false}.to_json
+        return missing_options_response
       elsif options[:zip].present?
-        response = fetch_by_zip(options[:zip], options[:country])
+        parsed_response = fetch_by_zip(options)
       else
-        response = fetch_by_city(options[:city])
+        parsed_response = fetch_by_city(options)
       end
-      return response
+      return parsed_response
     end
 
     private
 
-    # TODO
-    # Caching
-    # Move by zip to it's class
-    # Move by city to it's class
-    # Finish specs
+    def missing_options_response
+      { 
+        data: nil,
+        error: 'Please pass in a city OR zip.',
+        cache: false
+      }.to_json
+    end
+
+    def fetch_by_zip(options)
+      Services::FetchWeatherByZip.process(
+        @client, options[:zip], options[:country]
+      )
+    end
+
+    def fetch_by_city(options)
+      Services::FetchWeatherByCity.process(
+        @client, options[:city]
+      )
+    end
+
+    ### TODO
+    # Caching wrapper
+    # Caching specs
     # Rm comments
-
-    def fetch_by_zip(zip, country = 'US')
-      begin
-        data = @client.current_zip(zip, country = 'US')
-        temperatures = {
-          current_temp: data.main.temp_f,
-          high: data.main.temp_max_f,
-          low: data.main.temp_min_f
-        }
-        response = {data: temperatures, error: nil, cache: false}
-      rescue Faraday::ResourceNotFound
-        response = {data: nil, error: 'API error - resource not found', cache: false}
-        return response.to_json
-      end
-      return response.to_json
-    end
-
-    def fetch_by_city(city)
-      begin
-        data = @client.current_weather(city: city)
-        temperatures = {
-          current_temp: data.main.temp_f,
-          high: data.main.temp_max_f,
-          low: data.main.temp_min_f
-        }
-        response = {data: temperatures, error: nil, cache: false}
-      rescue Faraday::ResourceNotFound
-        response = {data: nil, error: 'API error - resource not found', cache: false}
-        return response.to_json
-      end
-      return response.to_json
-    end
+    ###
   end
 end
 
 =begin
   wf = Services::WeatherForecast.new
-  data = wf.fetch_by_zip('20906') OR wf.fetch_by_zip('20906', 'US')
-  data = wf.fetch_by_city('Silver Spring')
-  data.main.temp_f
-  data.main.temp_max_f
-  data.main.temp_min_f
+  wf.process(zip: '20906')
+  wf.process(city: 'Silver Spring')
 =end
