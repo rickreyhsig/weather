@@ -6,10 +6,12 @@ Please set the environment variables according to the Configuration section.
 
 * Configuration
   Please set your `config/environment.yml` like such:
+```
     development:
       open_weather_api_key: '<development_key>'
     production
       open_weather_api_key: '<production_key>'
+ ```
 
 * Database creation
   * `rake db:create` 
