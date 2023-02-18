@@ -21,8 +21,8 @@ module Services
     # Caching
     # Move by zip to it's class
     # Move by city to it's class
-    # Add specs
-    # Add README for setting up api_key
+    # Finish specs
+    # Rm comments
 
     def fetch_by_zip(zip, country = 'US')
       begin

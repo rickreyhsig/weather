@@ -1,24 +1,22 @@
 # README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+Please set the environment variables according to the Configuration section.
 
 * Ruby version
-
-* System dependencies
+  * `ruby 2.5.9p229 (2021-04-05 revision 67939) [x86_64-darwin16]`
 
 * Configuration
+  Please set your `config/environment.yml` like such:
+    development:
+      open_weather_api_key: '<development_key>'
+    production
+      open_weather_api_key: '<production_key>'
 
 * Database creation
+  * `rake db:create` 
 
 * Database initialization
+  * `rake db:schema:load`
 
 * How to run the test suite
+  * `bundle exec rspec spec/services/weather_forecast_spec.rb`
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
