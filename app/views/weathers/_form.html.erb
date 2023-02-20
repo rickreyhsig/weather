@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Weather Forecast</h2>
+
+<%= form_tag(controller: 'weathers', action: 'show', method: 'post') do %>
+  <%= label_tag(:zip, 'Zip:') %>
+  <%= text_field_tag(:zip) %>
+  <%= label_tag(:city, 'City:') %>
+  <%= text_field_tag(:city) %>
+  <%= label_tag(:country, 'Country:') %>
+  <%= text_field_tag(:country) %>
+  <%= submit_tag('Search') %>
+<% end %>

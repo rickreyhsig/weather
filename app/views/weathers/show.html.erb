@@ -1,0 +1,22 @@
+<%= render 'form' %>
+
+<% if @response['error'].present? %>
+  <p>
+    <%= @response['error'] %>
+  </p>
+<% else %>
+  <table>
+  <tr>
+    <th>Current Temperature</th>
+    <th>High</th>
+    <th>Low</th>
+  </tr>
+  <tr>
+    <td><%= @response['data']['current_temp'] %></td>
+    <td><%= @response['data']['high'] %></td>
+    <td><%= @response['data']['low'] %></td>
+  </tr>
+  </table>
+<% end %>
+
+<%= 'This was a cached query!' if @response['cache']  %>

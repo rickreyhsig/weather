@@ -8,6 +8,8 @@ module Services
         parsed_response = parse_response(data, cache)
       rescue Faraday::ResourceNotFound
         return resource_not_found_response
+      rescue Faraday::ConnectionFailed
+        return api_not_found_response
       end
       return parsed_response
     end
@@ -43,6 +45,14 @@ module Services
       {
         data: nil,
         error: 'API error - resource not found',
+        cache: false
+      }.to_json
+    end
+
+    def api_not_found_response
+      {
+        data: nil,
+        error: 'API error - timeout',
         cache: false
       }.to_json
     end
