@@ -36,6 +36,5 @@ module Services
         cache: false
       }.to_json
     end
-
   end
 end

@@ -46,11 +46,5 @@ module Services
         cache: false
       }.to_json
     end
-
   end
 end
-
-=begin
-client = OpenWeather::Client.new
-Services::FetchWeatherByZip.new.process(client, '20906')
-=end
