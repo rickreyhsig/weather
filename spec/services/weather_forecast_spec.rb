@@ -4,7 +4,6 @@ describe Services::WeatherForecast do
   subject { described_class.new }
 
   describe 'process' do
-  
     it 'when no params are provided, an error is triggered' do
       error_response = {
         data: nil,
@@ -15,44 +14,21 @@ describe Services::WeatherForecast do
     end
 
     it 'gets response by zip' do
-      zip = '20906'
-      zip_response = {
-        data: {
-          current_temp: 30.51, high: 33.71, low: 27.79
-        },
-        error: nil,
-        cache: false
-      }.to_json
-      allow(subject).to receive(:process).with(zip: zip) { zip_response }
-      expect(subject.process(zip: zip)).to eq(zip_response)
+      allow_any_instance_of(Services::FetchWeatherByZip).to receive(:process).and_return(nil)
+
+      expect(subject).to receive(:fetch_by_zip)
+      expect(subject).not_to receive(:fetch_by_city)
+
+      subject.process(zip: '20906')
     end
 
     it 'gets response by city' do
-      city = 'Silver Spring'
-      city_response = {
-        data: {
-          current_temp: 39.76, high: 42.17, low: 37.85
-        },
-        error: nil,
-        cache: false
-      }.to_json
-      allow(subject).to receive(:process).with(city: city) { city_response }
-      expect(subject.process(city: city)).to eq(city_response)
+      allow_any_instance_of(Services::FetchWeatherByCity).to receive(:process).and_return(nil)
+
+      expect(subject).not_to receive(:fetch_by_zip)
+      expect(subject).to receive(:fetch_by_city)
+
+      subject.process(city: 'Silver Spring')
     end
-
-
-    # xit "gets response from cache" do
-    #   zip_response = {
-    #     data: {
-    #       current_temp: 30.51, high: 33.71, low: 27.79
-    #     },
-    #      error: nil,
-    #      cache: false
-    #   }.to_json
-    #   allow(subject).to receive(:process).with(zip: '20906') { zip_response }
-    #   expect(subject.process(zip: '20906')).to eq(zip_response)
-    # end
-
   end
-
 end

@@ -1,7 +1,7 @@
 module Services
-  module FetchWeatherByCity
+  class FetchWeatherByCity
 
-    def self.process(client, city)
+    def process(client, city)
       begin
         data = client.current_weather(city: city)
         parsed_response = parse_response(data)
@@ -23,24 +23,19 @@ module Services
 
     def parse_response(data)
       {
-        data: temperatures,
+        data: temperatures(data),
         error: nil,
         cache: false
       }.to_json
     end
 
     def resource_not_found_response
-      { 
+      {
         data: nil,
         error: 'API error - resource not found',
         cache: false
       }.to_json
     end
+
   end
 end
-
-=begin
-include Services::FetchWeatherByCity
-client = OpenWeather::Client.new
-Services::FetchWeatherByCity.process(client, 'Silver Spring')
-=end

@@ -1,10 +1,11 @@
 module Services
-  module FetchWeatherByZip
+  class FetchWeatherByZip
 
-    def self.process(client, zip, country = 'US')
+    def process(client, zip, country = 'US', cache = false)
+      return cached_response(cache) if cache.present?
       begin
         data = client.current_zip(zip, country = 'US')
-        parsed_response = parse_response(data)
+        parsed_response = parse_response(data, cache)
       rescue Faraday::ResourceNotFound
         return resource_not_found_response
       end
@@ -12,6 +13,15 @@ module Services
     end
 
     private
+
+    def cached_response(cache)
+      cached_response = {}
+      JSON.parse(cache).each do |key, value|
+        cached_response[key] = value unless key == 'cache'
+      end
+      cached_response['cache'] = true
+      return cached_response.to_json
+    end
 
     def temperatures(data)
       {
@@ -21,26 +31,26 @@ module Services
       }
     end
 
-    def parse_response(data)
+    def parse_response(data, cache)
       {
         data: temperatures(data),
         error: nil,
-        cache: false 
+        cache: cache
       }.to_json
     end
 
     def resource_not_found_response
-      { 
+      {
         data: nil,
         error: 'API error - resource not found',
         cache: false
       }.to_json
     end
+
   end
 end
 
 =begin
-include Services::FetchWeatherByZip
 client = OpenWeather::Client.new
-Services::FetchWeatherByZip.process(client, '20906')
+Services::FetchWeatherByZip.new.process(client, '20906')
 =end

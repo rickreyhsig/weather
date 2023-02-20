@@ -20,7 +20,10 @@ Please set the environment variables according to the Configuration section.
   * `rake db:schema:load`
 
 * How to run the test suite
+  * `bundle exec rspec spec/services`
+  OR individually:
   * `bundle exec rspec spec/services/weather_forecast_spec.rb`
   * `bundle exec rspec spec/services/fetch_weather_by_zip_spec.rb`
   * `bundle exec rspec spec/services/fetch_weather_by_city_spec.rb`
+  * `bundle exec rspec spec/services/cached_weather_by_zip_spec.rb`
 

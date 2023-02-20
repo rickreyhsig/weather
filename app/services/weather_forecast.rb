@@ -1,7 +1,5 @@
 module Services
   class WeatherForecast
-    include Services::FetchWeatherByZip
-    include Services::FetchWeatherByCity
 
     def initialize
       @client = OpenWeather::Client.new
@@ -21,7 +19,7 @@ module Services
     private
 
     def missing_options_response
-      { 
+      {
         data: nil,
         error: 'Please pass in a city OR zip.',
         cache: false
@@ -29,27 +27,19 @@ module Services
     end
 
     def fetch_by_zip(options)
-      Services::FetchWeatherByZip.process(
+      Services::CachedWeatherByZip.new.process(
         @client, options[:zip], options[:country]
       )
     end
 
     def fetch_by_city(options)
-      Services::FetchWeatherByCity.process(
+      Services::FetchWeatherByCity.new.process(
         @client, options[:city]
       )
     end
 
     ### TODO
-    # Caching wrapper
-    # Caching specs
-    # Rm comments
+    # Frontend
     ###
   end
 end
-
-=begin
-  wf = Services::WeatherForecast.new
-  wf.process(zip: '20906')
-  wf.process(city: 'Silver Spring')
-=end
