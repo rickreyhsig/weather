@@ -1,3 +1,11 @@
+# Specifications
+
+<img width="587" alt="Screen Shot 2023-03-28 at 8 48 11 PM" src="https://user-images.githubusercontent.com/2385700/228391485-64e181c8-65ab-4f25-a8e3-c1516e52f29a.png">
+
+
+# Proposed Solution
+Use the open-weather-ruby-client gem to obtain weather information and cache details for requests by zip and display those results to the user.
+
 # README
 Please set the environment variables according to the Configuration section.
 
